@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+load 'artist-mapper.rb'
+
+require 'pry'
+
+Pry.start
