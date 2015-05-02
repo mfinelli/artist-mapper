@@ -21,7 +21,7 @@ class ArtistMapper
         ten: false,
         twenty: false,
         thirty: false,
-        fourty: false,
+        forty: false,
         fifty: false,
         sixty: false,
         seventy: false,
@@ -71,11 +71,11 @@ class ArtistMapper
       track_one_result = mysql.query("select `id` from `tracks` where `dataset_id` = '#{track_one_dsid}' limit 1")
       track_two_result = mysql.query("select `id` from `tracks` where `dataset_id` = '#{track_two_dsid}' limit 1")
 
-      unless track_one_result != 1 or track_two_result != 1
+      unless track_one_result.count != 1 or track_two_result.count != 1
         track_one = track_one_result.first['id']
         track_two = track_two_result.first['id']
         # both tracks exist in our database, now make sure the relationship doesn't already exist
-        exist_result = mysql.query('select * from `similars` where ' +
+        exist_result = mysql.query('select `id` from `similars` where ' +
                                        "(`track_1` = #{track_one} and `track_2` = #{track_two}) or " +
                                        "(`track_1` = #{track_two} and `track_2` = #{track_one}) limit 1")
 
@@ -125,6 +125,9 @@ class ArtistMapper
     end
 
     puts '100% done.'.green
+
+    result = mysql.query('select `id` from `similars`')
+    puts 'Valid similar rows: '.blue + result.count.to_s.blue
   end
 
 end
