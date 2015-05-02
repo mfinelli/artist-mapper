@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+load 'credentials.rb'
 load 'artist-mapper.rb'
 load 'tweet-finder.rb'
 

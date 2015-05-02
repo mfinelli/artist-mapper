@@ -15,6 +15,14 @@ a local copy of the files using git:
 $ git clone https://github.com/mfinelli/artist-mapper.git
 ```
 
+### Twitter credentials
+
+To get the tweet finder to work you will need to register a
+[new Twitter application](https://apps.twitter.com/app/new). Then copy the file `credentials.rb.sample` to
+`credentials.rb` (we have excluded this file from source control so that our own keys are not available to the public
+at large). Once you've copied the file you should updated the constants with the strings that you can find on the
+application page.
+
 ## Dependencies
 
 The dataset can be downloaded from 
