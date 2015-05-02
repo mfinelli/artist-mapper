@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 load 'artist-mapper.rb'
+load 'tweet-finder.rb'
 
 require 'pry'
 
