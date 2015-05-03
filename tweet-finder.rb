@@ -117,4 +117,28 @@ class TweetFinder
     end
   end
 
+  def report_matches
+    similars = mysql.query('select `similar`, count(*) from `matches` group by `similar`')
+
+    similars.each do |similar|
+      similar = mysql.query("select * from `similars` where `id` = #{similar['similar']} limit 1").first
+
+      track_one = get_track_name_from_id(similar['track_1'])
+      track_one_artist = get_artist_name_from_track_id(similar['track_1'])
+
+      track_two = get_track_name_from_id(similar['track_2'])
+      track_two_artist = get_artist_name_from_track_id(similar['track_2'])
+
+      puts "#{track_one} by #{track_one_artist} is similar to #{track_two} by #{track_two_artist}".green
+
+      tweets = mysql.query("select * from `matches` where `similar` = #{similar['id']}")
+
+      tweets.each do |tweet|
+        puts "#{tweet['user']}".red + ' said', tweet['tweet_1'], tweet['tweet_2'], ''
+      end
+
+      puts '-----------------------', '', ''
+    end
+  end
+
 end
