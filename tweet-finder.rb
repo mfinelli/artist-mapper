@@ -46,6 +46,7 @@ class TweetFinder
         track_two_artist = get_artist_name_from_track_id(similar['track_2'])
         puts "Asking twitter for tweets about #{track_one} by #{track_one_artist}"
 
+        retries = 0
         begin
           twitter.search("#{track_one} by #{track_one_artist}").each do |tweet|
             puts tweet.text
@@ -76,9 +77,14 @@ class TweetFinder
               puts "#{15-minute} minutes(s) left..."
             end
           end
-          retry
+
+          retries += 1
+          unless retries > 3
+            retry
+          end
         end
 
+        retries = 0
         mysql.query("update `similars` set `tracks_processed` = 1 where `id` = #{similar['id']} limit 1")
       end
 
