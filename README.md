@@ -78,6 +78,16 @@ Process the data:
 am.recurse!
 ```
 
+Now it's time to see if we can get any useful information from the data:
+
+```ruby
+tf = TweetFinder.new
+tf.find_tweets!
+```
+
+(Note that you could start this last process while the first is still running. It checks the database in small batches
+and will quickly fall behind the mapping due to the rate limiting.)
+
 ## License
 
 This project licensed under the [GNU Public License v3](https://www.gnu.org/licenses/gpl.html), see LICENSE for more
