@@ -87,4 +87,28 @@ class TweetFinder
     end
   end
 
+  def purge_duplicate_matches!
+    similars = mysql.query('select `similar`, count(*) from `matches` group by `similar`')
+
+    similars.each do |similar|
+      matches = mysql.query("select * from `matches` where `similar` = #{similar['similar']}")
+      matches.each do |match|
+        # first we need to query to make sure this match hasn't already been deleted
+        exists = mysql.query("select `id` from `matches` where `id` = #{match['id']} limit 1")
+
+        unless exists.count != 1
+          query = "select `id` from `matches` where `id` != #{match['id']} and `user` = " +
+              "'#{mysql.escape(match['user'])}' and `tweet_1` = " +
+              "'#{mysql.escape(match['tweet_1'])}' and `tweet_2` = '#{mysql.escape(match['tweet_2'])}'"
+          duplicates = mysql.query(query)
+
+          duplicates.each do |duplicate|
+            puts "DUPLICATES FOUND: ids #{match['id']} and #{duplicate['id']}"
+            mysql.query("delete from `matches` where `id` = #{duplicate['id']} limit 1")
+          end
+        end
+      end
+    end
+  end
+
 end
