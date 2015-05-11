@@ -25,7 +25,7 @@ application page.
 
 ## Dependencies
 
-The dataset can be downloaded from 
+The dataset can be downloaded from
 [http://labrosa.ee.columbia.edu/millionsong/lastfm#getting](http://labrosa.ee.columbia.edu/millionsong/lastfm#getting)
 
 Project dependencies are handled with [bundler](http://bundler.io).
@@ -87,6 +87,22 @@ tf.find_tweets!
 
 (Note that you could start this last process while the first is still running. It checks the database in small batches
 and will quickly fall behind the mapping due to the rate limiting.)
+
+Due to the way that the rate limiting is handled, it is possible that duplicate tweets will be added to the database
+(meaning that they have the same content and are the same user). You can remove these tweets from the matches table:
+
+```ruby
+tf.purge_duplicate_matches!
+```
+
+Finally, in order to inspect all of the matches run:
+
+```ruby
+tf.report_matches
+```
+
+(If you save the return value to a variable you can call `count` on it to see how many track pairs have at least one
+result.)
 
 ## License
 
